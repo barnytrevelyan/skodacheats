@@ -113,7 +113,7 @@ export default function ComplaintList() {
 
               <p className="text-gray-700 mb-3">{complaint.description}</p>
 
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600 border-t border-gray-100 pt-3">
+              <div className="flex flex-wrap gap-4 text-sm text-gray-600 border-t border-gray-100 pt-3 mb-3">
                 {complaint.order_amount && (
                   <div>
                     <span className="font-semibold">Amount:</span> ${parseFloat(complaint.order_amount).toFixed(2)}
@@ -124,7 +124,32 @@ export default function ComplaintList() {
                     <span className="font-semibold">Order Date:</span> {complaint.order_date}
                   </div>
                 )}
+                {complaint.uber_order_number && (
+                  <div>
+                    <span className="font-semibold">Uber Order #:</span> {complaint.uber_order_number}
+                  </div>
+                )}
               </div>
+
+              {complaint.file_urls && complaint.file_urls.length > 0 && (
+                <div className="border-t border-gray-100 pt-3">
+                  <p className="text-sm font-semibold text-gray-700 mb-2">Attached Evidence:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {complaint.file_urls.map((fileUrl, idx) => (
+                      <a
+                        key={idx}
+                        href={fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-3 py-1 bg-blue-50 border border-blue-200 text-blue-600 rounded text-xs hover:bg-blue-100 transition"
+                      >
+                        <span className="mr-1">📎</span>
+                        View Evidence {idx + 1}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

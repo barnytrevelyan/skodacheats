@@ -20,7 +20,9 @@ export default function ComplaintForm({ onSubmitSuccess }) {
     description: '',
     orderAmount: '',
     orderDate: '',
+    uberOrderNumber: '',
   })
+  const [uploadedFiles, setUploadedFiles] = useState([])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -30,6 +32,11 @@ export default function ComplaintForm({ onSubmitSuccess }) {
     }))
   }
 
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files)
+    setUploadedFiles(files)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -37,17 +44,28 @@ export default function ComplaintForm({ onSubmitSuccess }) {
     setSuccess(false)
 
     try {
+      const data = new FormData()
+      data.append('name', formData.name)
+      data.append('email', formData.email)
+      data.append('category', formData.category)
+      data.append('title', formData.title)
+      data.append('description', formData.description)
+      data.append('orderAmount', formData.orderAmount)
+      data.append('orderDate', formData.orderDate)
+      data.append('uberOrderNumber', formData.uberOrderNumber)
+
+      uploadedFiles.forEach((file) => {
+        data.append('files', file)
+      })
+
       const response = await fetch('/api/complaints', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: data,
       })
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Failed to submit complaint')
+        const responseData = await response.json()
+        throw new Error(responseData.error || 'Failed to submit complaint')
       }
 
       setSuccess(true)
@@ -59,7 +77,9 @@ export default function ComplaintForm({ onSubmitSuccess }) {
         description: '',
         orderAmount: '',
         orderDate: '',
+        uberOrderNumber: '',
       })
+      setUploadedFiles([])
 
       if (onSubmitSuccess) {
         onSubmitSuccess()
@@ -156,6 +176,19 @@ export default function ComplaintForm({ onSubmitSuccess }) {
       </div>
 
       <div className="mb-4">
+        <label className="block text-gray-700 font-semibold mb-2">Uber Order Number (Optional)</label>
+        <input
+          type="text"
+          name="uberOrderNumber"
+          value={formData.uberOrderNumber}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="e.g., UberEATS-ABC123XYZ or Uber order ID"
+        />
+        <p className="text-xs text-gray-500 mt-1">Include any Uber order number or reference ID to support your claim</p>
+      </div>
+
+      <div className="mb-4">
         <label className="block text-gray-700 font-semibold mb-2">Brief Title</label>
         <input
           type="text"
@@ -179,6 +212,32 @@ export default function ComplaintForm({ onSubmitSuccess }) {
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Describe what happened. Include dates, order details, attempts to contact support, etc."
         />
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-gray-700 font-semibold mb-2">Upload Evidence (Optional)</label>
+        <p className="text-sm text-gray-600 mb-3">
+          Attach screenshots, receipts, or any documentation to support your claim. Accepted formats: JPG, PNG, PDF (max 5MB each)
+        </p>
+        <input
+          type="file"
+          multiple
+          onChange={handleFileChange}
+          accept="image/jpeg,image/png,application/pdf"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {uploadedFiles.length > 0 && (
+          <div className="mt-3">
+            <p className="text-sm font-semibold text-gray-700 mb-2">Selected files:</p>
+            <ul className="space-y-1">
+              {uploadedFiles.map((file, idx) => (
+                <li key={idx} className="text-sm text-gray-600 flex items-center">
+                  <span className="text-green-600 mr-2">✓</span> {file.name} ({(file.size / 1024).toFixed(2)} KB)
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <button

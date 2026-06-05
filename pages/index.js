@@ -21,17 +21,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-6xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900">UberCheats</h1>
-                <p className="text-gray-600 text-sm mt-1">
-                  A public record of Uber refund and charging issues
-                </p>
-              </div>
-            </div>
+      <div className="min-h-screen bg-white">
+        <header className="relative h-96 bg-gray-900 overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=400&fit=crop"
+            alt="Documentation and complaints"
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-black opacity-40"></div>
+          <div className="relative max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8 flex flex-col justify-center h-full">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">UberCheats</h1>
+            <p className="text-lg text-gray-100 max-w-2xl">
+              A public record of Uber refund and charging issues. Document your case and help others affected by the same problems.
+            </p>
           </div>
         </header>
 

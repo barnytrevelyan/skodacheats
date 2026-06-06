@@ -165,6 +165,7 @@ export default function Home() {
           <p>UberCheats &copy; 2026 &nbsp;|&nbsp; Not affiliated with Uber Technologies Inc.</p>
           <p className="mt-1 text-gray-500 space-x-4">
             <Link href="/directory" className="hover:text-gray-300 underline">Global Directory</Link>
+            <Link href="/uber-contacts" className="hover:text-gray-300 underline">Uber Contacts</Link>
             <Link href="/my-complaints" className="hover:text-gray-300 underline">Manage your case</Link>
           </p>
         </footer>

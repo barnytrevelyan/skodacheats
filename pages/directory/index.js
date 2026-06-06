@@ -92,6 +92,18 @@ export default function DirectoryIndex({ countries }) {
             ))}
           </section>
 
+          {/* Social media shortcut */}
+          <div className="mb-10 flex items-center justify-between p-4 bg-gray-900 text-white rounded-xl">
+            <div>
+              <p className="font-semibold text-sm">📱 Need Uber&apos;s social media accounts?</p>
+              <p className="text-xs text-gray-400 mt-0.5">All verified global + regional handles for public complaint escalation</p>
+            </div>
+            <Link href="/uber-contacts"
+              className="shrink-0 ml-4 bg-white text-gray-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-gray-100 transition">
+              View all →
+            </Link>
+          </div>
+
           {/* Country list by region */}
           {REGION_ORDER.filter(r => byRegion[r]).map(region => (
             <section key={region} className="mb-10">

@@ -64,11 +64,22 @@ Yours sincerely,
 }
 
 // ── Section table ─────────────────────────────────────────────
-function EntryTable({ entries, emptyMessage }) {
+function EntryTable({ entries, emptyMessage, section }) {
   if (!entries.length) return <p className="text-sm text-gray-500 italic py-3">{emptyMessage}</p>
+
+  const isExec = section === 'executive'
 
   return (
     <div className="overflow-x-auto">
+      {isExec && (
+        <div className="mb-3 flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
+          <span className="text-base leading-none">⚠️</span>
+          <span>
+            <strong>Verify before use:</strong> Executive roles change. Always confirm the current title on LinkedIn before sending a message.
+            This directory reflects publicly available information — if you spot an outdated entry, use the Contribute button below to flag it.
+          </span>
+        </div>
+      )}
       <table className="w-full text-sm border-collapse">
         <thead>
           <tr className="bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -82,7 +93,12 @@ function EntryTable({ entries, emptyMessage }) {
           {entries.map((e) => (
             <tr key={e.id} className="hover:bg-gray-50 align-top">
               <td className="px-3 py-3 border border-gray-200 font-medium text-gray-700">{e.role_or_type}</td>
-              <td className="px-3 py-3 border border-gray-200 font-semibold text-gray-900">{e.name}</td>
+              <td className="px-3 py-3 border border-gray-200">
+                <div className="font-semibold text-gray-900">{e.name}</div>
+                {e.last_verified_note && (
+                  <div className="text-xs text-gray-400 mt-1">🕐 {e.last_verified_note}</div>
+                )}
+              </td>
               <td className="px-3 py-3 border border-gray-200 text-gray-600 leading-relaxed">{e.notes}</td>
               <td className="px-3 py-3 border border-gray-200">
                 {e.contact_url ? (
@@ -96,6 +112,74 @@ function EntryTable({ entries, emptyMessage }) {
           ))}
         </tbody>
       </table>
+    </div>
+  )
+}
+
+
+// ── Regional social account mapping ─────────────────────────
+const REGIONAL_SOCIAL = {
+  'kenya':         [{ handle: '@uber_kenya', url: 'https://x.com/uber_kenya', platform: 'X' }, { handle: '@UberEATS_Kenya', url: 'https://x.com/UberEATS_Kenya', platform: 'X' }],
+  'united-kingdom':[{ handle: '@ubereats_uk', url: 'https://x.com/ubereats_uk', platform: 'X' }, { handle: '@UberUKI_Support', url: 'https://x.com/uberuki_support', platform: 'X' }],
+  'ireland':       [{ handle: '@UberUKI_Support', url: 'https://x.com/uberuki_support', platform: 'X' }],
+  'india':         [{ handle: '@Uber_India', url: 'https://x.com/Uber_India', platform: 'X' }, { handle: '@UberIN_Support', url: 'https://x.com/uberin_support', platform: 'X' }],
+  'australia':     [{ handle: '@ubereats_aus', url: 'https://www.instagram.com/ubereats_aus/', platform: 'Instagram' }],
+  'south-africa':  [{ handle: '@Uber_RSA', url: 'https://x.com/uber_rsa', platform: 'X' }, { handle: '@ubereats_za', url: 'https://www.instagram.com/ubereats_za/', platform: 'Instagram' }],
+  'brazil':        [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
+  'mexico':        [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
+  'colombia':      [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
+  'chile':         [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
+  'argentina':     [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
+  'peru':          [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
+}
+
+const GLOBAL_SOCIAL = [
+  { handle: '@Uber_Support', url: 'https://x.com/Uber_Support', platform: 'X', badge: '⚡' },
+  { handle: '@UberEats', url: 'https://x.com/UberEats', platform: 'X' },
+  { handle: 'Uber Eats', url: 'https://www.facebook.com/UberEats/', platform: 'Facebook' },
+]
+
+function SocialEscalationWidget({ countrySlug }) {
+  const regional = REGIONAL_SOCIAL[countrySlug] || []
+  return (
+    <div className="p-5 bg-gray-900 text-white rounded-xl">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-bold text-white">📱 Social media escalation</h3>
+        <Link href="/uber-contacts" className="text-xs text-gray-400 hover:text-white underline">
+          All accounts →
+        </Link>
+      </div>
+      <p className="text-xs text-gray-400 mb-4">
+        Public posts with your order reference + screenshot get faster responses than in-app tickets.
+        Tag multiple accounts at once for best results.
+      </p>
+      {regional.length > 0 && (
+        <div className="mb-3">
+          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Regional</div>
+          <div className="flex flex-wrap gap-2">
+            {regional.map(a => (
+              <a key={a.handle} href={a.url} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-white text-xs font-semibold px-3 py-1.5 rounded-full transition">
+                <span>{a.platform === 'X' ? '𝕏' : a.platform === 'Instagram' ? '📷' : '🔗'}</span>
+                {a.handle}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+      <div>
+        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Global</div>
+        <div className="flex flex-wrap gap-2">
+          {GLOBAL_SOCIAL.map(a => (
+            <a key={a.handle} href={a.url} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-white text-xs font-semibold px-3 py-1.5 rounded-full transition">
+              <span>{a.platform === 'X' ? '𝕏' : a.platform === 'Facebook' ? '📘' : '🔗'}</span>
+              {a.badge && <span>{a.badge}</span>}
+              {a.handle}
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
@@ -278,6 +362,9 @@ export default function CountryPage({ country, executives, paymentPartners, regu
             </section>
           )}
 
+          {/* Social escalation */}
+          <SocialEscalationWidget countrySlug={country.slug} />
+
           {/* Part A: Executives */}
           <section>
             <div className="flex items-center gap-2 mb-4">
@@ -287,7 +374,7 @@ export default function CountryPage({ country, executives, paymentPartners, regu
                 <p className="text-sm text-gray-500">Executives who respond to reputational and regulatory pressure</p>
               </div>
             </div>
-            <EntryTable entries={executives} emptyMessage={`No executive data yet for ${country.name}. Be the first to contribute.`} />
+            <EntryTable entries={executives} section="executive" emptyMessage={`No executive data yet for ${country.name}. Be the first to contribute.`} />
           </section>
 
           {/* Part B: Payment Partners */}
@@ -299,7 +386,7 @@ export default function CountryPage({ country, executives, paymentPartners, regu
                 <p className="text-sm text-gray-500">Payment processors and how to dispute charges directly</p>
               </div>
             </div>
-            <EntryTable entries={paymentPartners} emptyMessage={`No payment data yet for ${country.name}.`} />
+            <EntryTable entries={paymentPartners} section="payment_partner" emptyMessage={`No payment data yet for ${country.name}.`} />
           </section>
 
           {/* Part C: Regulators */}
@@ -311,7 +398,7 @@ export default function CountryPage({ country, executives, paymentPartners, regu
                 <p className="text-sm text-gray-500">Official bodies that can investigate, fine, and compel refunds</p>
               </div>
             </div>
-            <EntryTable entries={regulators} emptyMessage={`No regulator data yet for ${country.name}.`} />
+            <EntryTable entries={regulators} section="regulator" emptyMessage={`No regulator data yet for ${country.name}.`} />
           </section>
 
           {/* Contribute form */}

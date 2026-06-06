@@ -61,8 +61,8 @@ const BRAND = {
     headline: 'Škoda let you down.',
     subheadline: 'We make it public.',
     body: 'A global, crowdsourced record of Škoda warranty failures, PCP mis-selling, dealer fraud, and unresolved service disputes. Every case is a permanent public record. Find out how to fight back.',
-    imageUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1400&h=600&fit=crop&crop=center',
-    imageAlt: 'Car dealership and consumer dispute',
+    imageUrl: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1400&h=600&fit=crop&crop=center',
+    imageAlt: 'Car on dark road representing consumer dispute',
     manageLink: 'Already submitted? Manage your case →',
   },
 
@@ -107,8 +107,8 @@ const BRAND = {
   about: {
     heading: 'About SkodaCheats',
     body: 'SkodaCheats is an independent, consumer-run platform documenting Škoda vehicle defects, PCP finance mis-selling, dealer fraud, and unresolved service disputes worldwide. We exist because Škoda dealerships and Volkswagen Group systematically fail to resolve legitimate consumer complaints. Every case here is permanent. Use the Global Directory for country-specific escalation routes, the Dispute Guide for step-by-step help, and the Legal Tracker to understand your rights.',
-    heroImage: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&h=320&fit=crop&crop=center',
-    heroImageAlt: 'Consumer advocacy and community',
+    heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=320&fit=crop&crop=faces',
+    heroImageAlt: 'Consumer advocating for their rights',
     whatWeOffer: [
       ['📝 Case documentation', 'A permanent public record of your dispute — warranty failures, finance complaints, service fraud. Add photos, documents, and updates over time.'],
       ['🌍 Global Recourse Directory', 'Country-specific guides covering Škoda regional executives, finance provider dispute routes, and regulatory bodies.'],
@@ -164,7 +164,7 @@ const BRAND = {
   // ── Guide ─────────────────────────────────────────────────────────────────
   guide: {
     heroImage: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1400&h=500&fit=crop&crop=center',
-    heroImageAlt: 'Car keys and consumer rights documents',
+    heroImageAlt: 'Car keys and consumer rights — how to get your money back from Škoda',
     headline: 'How to Resolve Your',
     subheadline: 'Škoda Dispute',
     intro: 'A six-step escalation guide — from dealer complaint to small claims court. Works in 20+ countries. Most disputes can be resolved at step 3 or 4.',
@@ -284,8 +284,8 @@ const BRAND = {
 
   // ── Legal tracker ─────────────────────────────────────────────────────────
   legal: {
-    heroImage: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1400&h=500&fit=crop',
-    heroImageAlt: 'Legal documents and regulatory proceedings',
+    heroImage: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1400&h=500&fit=crop&crop=center',
+    heroImageAlt: 'Legal documents and regulatory proceedings against Škoda and VW Group',
     headline: '⚖️ Legal & Regulatory Tracker',
     intro: 'A living record of regulatory actions, lawsuits, and consumer protection orders against Škoda and VW Group worldwide. Use this to understand your rights and find the right authority to escalate to.',
     sourceNote: 'All information sourced from official government, court, and regulatory records. Case summaries represent findings and allegations from those records. Last updated June 2026.',
@@ -485,6 +485,10 @@ const BRAND = {
       },
     ],
   },
+
+  // ── Directory hero image
+  directoryHeroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1400&h=400&fit=crop&crop=center',
+  directoryHeroImageAlt: 'Global map showing Škoda markets worldwide',
 
   // ── Directory email template ───────────────────────────────────────────────
   emailTemplate: (countryName, currencyCode) => `Subject: Formal Complaint — Unresolved Škoda Vehicle Dispute

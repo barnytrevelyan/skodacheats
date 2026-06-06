@@ -117,10 +117,10 @@ export default function Home() {
           <img
             src={BRAND.hero.imageUrl}
             alt={BRAND.hero.imageAlt}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${heroLoaded ? 'opacity-35' : 'opacity-0'}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${heroLoaded ? 'opacity-25' : 'opacity-0'}`}
             onLoad={() => setHeroLoaded(true)}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-gray-900/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/95 to-gray-900/85" />
           <div className="relative max-w-6xl mx-auto px-4 py-16 sm:px-6 w-full">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-red-700/30 border border-red-600/40 text-red-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-5">

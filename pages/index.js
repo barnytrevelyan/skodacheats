@@ -70,7 +70,6 @@ function StatsBar() {
 export default function Home() {
   const [activeTab, setActiveTab] = useState('report')
   const [refreshKey, setRefreshKey] = useState(0)
-  const [heroLoaded, setHeroLoaded] = useState(false)
   const [selectedFormCategory, setSelectedFormCategory] = useState('')
 
   const handleSubmitSuccess = () => {
@@ -117,8 +116,7 @@ export default function Home() {
           <img
             src={BRAND.hero.imageUrl}
             alt={BRAND.hero.imageAlt}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${heroLoaded ? 'opacity-50' : 'opacity-0'}`}
-            onLoad={() => setHeroLoaded(true)}
+            className="absolute inset-0 w-full h-full object-cover opacity-50"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-gray-900/50" />
           <div className="relative max-w-6xl mx-auto px-4 py-16 sm:px-6 w-full">

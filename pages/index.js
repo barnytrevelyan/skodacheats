@@ -44,21 +44,21 @@ function StatsBar() {
   const fmt = (n) => n?.toLocaleString() ?? '—'
   const fmtUSD = (n) => n ? `$${n.toLocaleString()}` : '—'
   return (
-    <div className={BRAND.theme.statsBg}>
+    <div style={{backgroundColor: "#15803d"}}>
       <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 grid grid-cols-2 sm:grid-cols-3 gap-4 text-center text-white">
         <div>
           <div className="text-2xl font-black">{fmt(stats?.totalCases)}</div>
-          <div className={`${BRAND.theme.statsText} text-xs uppercase tracking-wide font-semibold`}>
+          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold`}>
             {stats?.totalCases === 1 ? 'Case documented' : 'Cases documented'}
           </div>
         </div>
         <div>
           <div className="text-2xl font-black">{fmtUSD(stats?.totalUSD)}</div>
-          <div className={`${BRAND.theme.statsText} text-xs uppercase tracking-wide font-semibold`}>USD disputed</div>
+          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold`}>USD disputed</div>
         </div>
         <div className="col-span-2 sm:col-span-1">
           <div className="text-2xl font-black">{fmt(stats?.resolvedCases)}</div>
-          <div className={`${BRAND.theme.statsText} text-xs uppercase tracking-wide font-semibold`}>
+          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold`}>
             {stats?.resolvedCases === 1 ? 'Case resolved' : 'Cases resolved'}
           </div>
         </div>
@@ -117,10 +117,10 @@ export default function Home() {
           <img
             src={BRAND.hero.imageUrl}
             alt={BRAND.hero.imageAlt}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${heroLoaded ? 'opacity-25' : 'opacity-0'}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${heroLoaded ? 'opacity-50' : 'opacity-0'}`}
             onLoad={() => setHeroLoaded(true)}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/95 to-gray-900/85" />
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/80 to-gray-900/50" />
           <div className="relative max-w-6xl mx-auto px-4 py-16 sm:px-6 w-full">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-red-700/30 border border-red-600/40 text-red-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-5">

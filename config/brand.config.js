@@ -60,7 +60,7 @@ const BRAND = {
     badge: 'Independent consumer advocacy — not affiliated with Škoda Auto',
     headline: 'Did Škoda let you down?',
     subheadline: 'We make it public.',
-    body: 'A global, crowdsourced record of Škoda warranty failures, PCP mis-selling, dealer fraud, and unresolved service disputes. Every case is a permanent public record. Find out how to fight back.',
+    body: 'A global, crowdsourced record of Škoda warranty failures, PCP finance disputes, dealer mis-selling, and unresolved service disputes. Every case is searchable and timestamped. Find out how to fight back.',
     imageUrl: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1400&h=600&fit=crop&crop=center',
     imageAlt: 'Car on dark road representing consumer dispute',
     manageLink: 'Already submitted? Manage your case →',

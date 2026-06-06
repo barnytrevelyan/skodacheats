@@ -48,17 +48,17 @@ function StatsBar() {
       <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 grid grid-cols-2 sm:grid-cols-3 gap-4 text-center text-white">
         <div>
           <div className="text-2xl font-black">{fmt(stats?.totalCases)}</div>
-          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold`}>
+          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold">
             {stats?.totalCases === 1 ? 'Case documented' : 'Cases documented'}
           </div>
         </div>
         <div>
           <div className="text-2xl font-black">{fmtUSD(stats?.totalUSD)}</div>
-          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold`}>USD disputed</div>
+          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold">USD disputed</div>
         </div>
         <div className="col-span-2 sm:col-span-1">
           <div className="text-2xl font-black">{fmt(stats?.resolvedCases)}</div>
-          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold`}>
+          <div className="text-green-200 text-xs uppercase tracking-wide font-semibold">
             {stats?.resolvedCases === 1 ? 'Case resolved' : 'Cases resolved'}
           </div>
         </div>
@@ -129,11 +129,11 @@ export default function Home() {
               </div>
               <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
                 {BRAND.hero.headline}<br />
-                <span className={BRAND.theme.accentText}>{BRAND.hero.subheadline}</span>
+                <span style={{color: "#4ade80"}}>{BRAND.hero.subheadline}</span>
               </h1>
               <p className="text-gray-300 text-lg mb-8 leading-relaxed">{BRAND.hero.body}</p>
               <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-                <button onClick={() => setActiveTab('report')} className={`${BRAND.theme.primaryBtn} text-white font-bold px-6 py-3 rounded-lg transition text-sm`}>
+                <button onClick={() => setActiveTab('report')} style={{backgroundColor: "#15803d"}} className="hover:opacity-90 text-white font-bold px-6 py-3 rounded-lg transition text-sm">
                   📝 Report your case
                 </button>
                 <Link href="/guide" className="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg transition text-sm border border-white/20">

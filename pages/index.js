@@ -11,7 +11,7 @@ const FAQ_ITEMS = [
   { q: 'Can I do a chargeback on Uber Eats?', a: 'Yes. Contact your bank or card issuer and dispute the charge. Visa and Mastercard give you 60–120 days from the transaction date. In the UK, Section 75 covers credit card purchases over £100.' },
   { q: 'Has the FTC sued Uber?', a: 'Yes. The FTC and 21 US states sued Uber in April 2025 for deceptive Uber One billing and cancellation practices. An amended complaint was filed in December 2025.' },
   { q: 'Is UberCheats affiliated with Uber?', a: 'No. UberCheats is an independent consumer advocacy platform. It is not affiliated with, authorised, or endorsed by Uber Technologies, Inc.' },
-  { q: 'What is Uber Eats refund policy?', a: 'Uber Eats claims to offer refunds for missing items, wrong orders, or undelivered food, but in practice frequently refuses. Under consumer law in most jurisdictions you are legally entitled to a refund for services not rendered.' },
+  { q: 'What is Uber Eats refund policy?', a: 'Uber Eats' stated policy covers refunds for missing items, wrong orders, or undelivered food, but many users report being refused. Under consumer law in most jurisdictions you are entitled to a refund for services not rendered. Under consumer law in most jurisdictions you are legally entitled to a refund for services not rendered.' },
   { q: 'How do I escalate an Uber complaint?', a: 'Step 1: in-app dispute. Step 2: tweet @UberEats and @Uber_Support publicly with your order number. Step 3: bank chargeback. Step 4: national consumer regulator complaint. Step 5: small claims court.' },
 ]
 
@@ -47,7 +47,7 @@ const jsonLd = {
 const CATEGORIES = [
   { label: 'Refund Not Issued', icon: '💸', desc: 'Charged but never refunded' },
   { label: 'Charged Twice', icon: '🔁', desc: 'Duplicate charges on one order' },
-  { label: 'Order Cancelled but Not Refunded', icon: '❌', desc: 'Cancelled order, kept the money' },
+  { label: 'Order Cancelled but Not Refunded', icon: '❌', desc: 'Cancelled order, payment not returned' },
   { label: 'Customer Service Unresponsive', icon: '🔇', desc: 'Support ignored or stonewalled' },
   { label: 'Other', icon: '⚠️', desc: 'Other billing or service failure' },
 ]
@@ -144,11 +144,11 @@ export default function Home() {
                 Independent consumer advocacy — not affiliated with Uber
               </div>
               <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
-                Uber won&apos;t refund you.<br />
-                <span className="text-red-400">We document it.</span>
+                Uber Eats refused your refund.<br />
+                <span className="text-red-400">We make it public.</span>
               </h1>
               <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-                A global, crowdsourced record of Uber Eats refund failures, double charges, and support stonewalling.
+                A global, crowdsourced record of Uber Eats refund failures, double charges, and unresolved billing disputes.
                 Every case is a permanent public record. Find out how to fight back in your country.
               </p>
               <div className="flex flex-wrap gap-3">
@@ -336,8 +336,7 @@ export default function Home() {
               <div>
                 <div className="font-semibold text-gray-300 mb-2 text-xs uppercase tracking-wide">Legal</div>
                 <p className="text-xs text-gray-500">
-                  All information is consumer-submitted or sourced from public records.
-                  UberCheats is not a law firm and does not provide legal advice.
+                  All case content is submitted by users and represents their individual reported experience. UberCheats is not a law firm and does not provide legal advice.
                 </p>
               </div>
             </div>

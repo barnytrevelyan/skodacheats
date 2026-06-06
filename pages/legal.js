@@ -38,15 +38,15 @@ const CASES = [
     statusColor: 'red',
     flag: '🇺🇸',
     jurisdiction: 'United States — New York State',
-    title: 'NY Attorney General v. Uber — Subscription Trap',
+    title: 'NY Attorney General v. Uber — Uber One Subscription Practices',
     authority: 'New York State Attorney General (Letitia James)',
     filed: '2025',
     updated: '2025',
-    summary: 'New York\'s Attorney General sued Uber separately for trapping customers in Uber One subscriptions, using misleading pop-ups claiming users would "save $25 every month" and making cancellation deliberately difficult.',
+    summary: 'New York\'s Attorney General sued Uber, alleging the company trapped customers in Uber One subscriptions, using misleading pop-ups claiming users would "save $25 every month" and making cancellation difficult despite "cancel anytime" claims.',
     allegations: [
       'Misleading pop-ups falsely claiming guaranteed $25/month savings',
       'Deceptive subscription sign-up flows targeting existing app users',
-      'Deliberate obstruction of cancellation processes',
+      'Making cancellation difficult despite advertising \'cancel anytime\' (as alleged in the complaint)',
     ],
     outcome: 'Ongoing litigation.',
     relevance: 'New York consumers affected by Uber One billing can contact the NY AG office.',
@@ -243,7 +243,7 @@ export default function Legal() {
           </div>
 
           <p className="text-xs text-gray-400 text-center">
-            All information sourced from official government and court records. Last updated June 2026.
+            All information on this page is sourced directly from official government press releases and court records, linked above. Case summaries represent allegations made in those filings — not findings of guilt. Last updated June 2026.
             UberCheats is not a law firm — this is not legal advice.
           </p>
         </main>

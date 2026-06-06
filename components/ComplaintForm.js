@@ -350,7 +350,9 @@ export default function ComplaintForm({ onSubmitSuccess, initialCategory }) {
       </button>
 
       <p className="text-xs text-gray-500 mt-4">
-        Your information helps build a public record of these issues. Please be truthful and provide as much detail as possible.
+        By submitting you confirm this is a truthful account of your own experience. Posts must contain only factual,
+        verifiable information. UberCheats is not liable for user-submitted content. Your name and case description will
+        be publicly visible — do not include personal financial details beyond the disputed amount.
       </p>
     </form>
   )

@@ -82,6 +82,7 @@ export default function About() {
                 <li><strong>Public records only.</strong> The executive and regulator directory uses only publicly available information from corporate announcements, LinkedIn, and government registries. No private contact details.</li>
                 <li><strong>Community-maintained.</strong> The directory is crowdsourced. All community contributions are reviewed before going live.</li>
                 <li><strong>No legal advice.</strong> We provide information and practical guidance. We are not a law firm and nothing here constitutes legal advice.</li>
+                <li><strong>User content.</strong> Case reports are submitted by users and represent their own experiences. We do not independently verify individual submissions. Users agree to post only truthful, factual accounts of their own experiences.</li>
               </ul>
             </section>
 
@@ -90,8 +91,11 @@ export default function About() {
               <p className="p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
                 UberCheats is an independent consumer advocacy and educational platform. It is not affiliated with,
                 authorised, or endorsed by Uber Technologies, Inc. or any of its subsidiaries. All registered
-                trademarks belong to their respective owners. All user-submitted content represents the individual
-                experience of the submitting user.
+                trademarks (including Uber® and Uber Eats®) belong to their respective owners and are used
+                here solely to identify the subject matter of consumer complaints, as permitted under
+                nominative fair use. All case content is submitted by users and represents their individual
+                reported experience — UberCheats does not verify the truth of individual submissions and
+                accepts no liability for user-generated content. Nothing on this site constitutes legal advice.
               </p>
             </section>
           </div>

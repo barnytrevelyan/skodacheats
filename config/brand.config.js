@@ -490,6 +490,21 @@ Yours sincerely,
 [YOUR EMAIL]
 [YOUR ADDRESS]`,
 
+
+  // ── Complaint form field labels ────────────────────────────────────────────
+  formFields: {
+    amountLabel: 'Amount in Dispute',
+    amountHelper: 'e.g. repair cost refused, finance overpayment, vehicle purchase price',
+    dateLabel: 'Date of Purchase / Incident',
+    refLabel: 'Vehicle / Case Reference (Optional)',
+    refPlaceholder: 'e.g., VIN, dealer job number, finance agreement number',
+    refHelper: 'Include your VIN, dealer reference, or finance agreement number to strengthen your case',
+    titleLabel: 'Brief Title',
+    titlePlaceholder: 'e.g., Warranty refused on 2022 Octavia gearbox failure at 18,000 miles',
+    descLabel: 'Detailed Description',
+    descPlaceholder: 'Describe what happened. Include dates, vehicle details (model, year, mileage), the fault, what Škoda/the dealer said, and any repair attempts.',
+  },
+
   // ── llms.txt ───────────────────────────────────────────────────────────────
   llmsTxt: `# SkodaCheats
 

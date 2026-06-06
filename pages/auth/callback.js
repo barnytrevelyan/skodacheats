@@ -1,3 +1,4 @@
+import BRAND from '../../config/brand.config'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -42,7 +43,7 @@ export default function AuthCallback() {
   return (
     <>
       <Head>
-        <title>Signing in — UberCheats</title>
+        <title>Signing in — {BRAND.name}</title>
       </Head>
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center px-4">

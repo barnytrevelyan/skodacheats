@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import BRAND from '../config/brand.config'
 
 async function uploadFile(file, complaintId) {
   const ext = file.name.split('.').pop()
@@ -11,13 +12,7 @@ async function uploadFile(file, complaintId) {
 }
 
 
-const CATEGORIES = [
-  'Refund Not Issued',
-  'Charged Twice',
-  'Order Cancelled but Not Refunded',
-  'Customer Service Unresponsive',
-  'Other',
-]
+const CATEGORIES = BRAND.categories.map(c => c.label)
 
 const CURRENCIES = [
   { code: 'AED', symbol: 'د.إ', name: 'UAE Dirham', rate: 3.67 },
@@ -287,16 +282,16 @@ export default function ComplaintForm({ onSubmitSuccess, initialCategory }) {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 font-semibold mb-2">Uber Order Number (Optional)</label>
+        <label className="block text-gray-700 font-semibold mb-2">Order Reference Number (Optional)</label>
         <input
           type="text"
           name="uberOrderNumber"
           value={formData.uberOrderNumber}
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="e.g., UberEATS-ABC123XYZ or Uber order ID"
+          placeholder="e.g., order ID or reference number"
         />
-        <p className="text-xs text-gray-500 mt-1">Include any Uber order number or reference ID to support your claim</p>
+        <p className="text-xs text-gray-500 mt-1">Include any order number or reference ID to support your claim</p>
       </div>
 
       <div className="mb-4">
@@ -350,9 +345,7 @@ export default function ComplaintForm({ onSubmitSuccess, initialCategory }) {
       </button>
 
       <p className="text-xs text-gray-500 mt-4">
-        By submitting you confirm this is a truthful account of your own experience. Posts must contain only factual,
-        verifiable information. UberCheats is not liable for user-submitted content. Your name and case description will
-        be publicly visible — do not include personal financial details beyond the disputed amount.
+        {BRAND.disclaimer.formTruthfulness}
       </p>
     </form>
   )

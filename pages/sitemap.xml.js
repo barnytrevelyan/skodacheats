@@ -1,6 +1,7 @@
+const BRAND = require('../config/brand.config')
 import { createClient } from '@supabase/supabase-js'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ubercheats.info'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || BRAND.domain
 
 const STATIC_PAGES = [
   { url: '/',              changefreq: 'daily',   priority: '1.0' },

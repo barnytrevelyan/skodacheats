@@ -1,9 +1,10 @@
+import BRAND from '../../config/brand.config'
 import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { createClient } from '@supabase/supabase-js'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ubercheats.info'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || BRAND.domain
 
 export async function getServerSideProps({ params }) {
   const supabase = createClient(
@@ -39,11 +40,7 @@ export async function getServerSideProps({ params }) {
 
 // ── Email template generator ─────────────────────────────────
 function emailTemplate(country) {
-  return `Subject: Formal Complaint — Unresolved Uber Eats Refund
-
-Dear [Executive Name / Support Team],
-
-I am writing to formally document an unresolved billing dispute with Uber Eats in ${country.name}.
+  return `
 
 Transaction details:
 - Date: [DATE]
@@ -53,7 +50,7 @@ Transaction details:
 
 I have attached evidence (screenshots) to support this claim.
 
-I am giving Uber Eats 7 days to resolve this before filing a formal complaint with:
+I am giving 7 days to resolve this before filing a formal complaint with:
 ${country.name === 'United Kingdom' ? '- The Financial Conduct Authority (FCA)\n- The Competition and Markets Authority (CMA)' : '- My national consumer protection authority\n- My payment provider / bank (chargeback)'}
 
 Please confirm receipt of this message and provide a resolution timeline.
@@ -109,27 +106,37 @@ function EntryTable({ entries, emptyMessage, section }) {
 }
 
 
-// ── Regional social account mapping ─────────────────────────
-const REGIONAL_SOCIAL = {
-  'kenya':         [{ handle: '@uber_kenya', url: 'https://x.com/uber_kenya', platform: 'X' }, { handle: '@UberEATS_Kenya', url: 'https://x.com/UberEATS_Kenya', platform: 'X' }],
-  'united-kingdom':[{ handle: '@ubereats_uk', url: 'https://x.com/ubereats_uk', platform: 'X' }, { handle: '@UberUKI_Support', url: 'https://x.com/uberuki_support', platform: 'X' }],
-  'ireland':       [{ handle: '@UberUKI_Support', url: 'https://x.com/uberuki_support', platform: 'X' }],
-  'india':         [{ handle: '@Uber_India', url: 'https://x.com/Uber_India', platform: 'X' }, { handle: '@UberIN_Support', url: 'https://x.com/uberin_support', platform: 'X' }],
-  'australia':     [{ handle: '@ubereats_aus', url: 'https://www.instagram.com/ubereats_aus/', platform: 'Instagram' }],
-  'south-africa':  [{ handle: '@Uber_RSA', url: 'https://x.com/uber_rsa', platform: 'X' }, { handle: '@ubereats_za', url: 'https://www.instagram.com/ubereats_za/', platform: 'Instagram' }],
-  'brazil':        [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
-  'mexico':        [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
-  'colombia':      [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
-  'chile':         [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
-  'argentina':     [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
-  'peru':          [{ handle: '@ubereatslatam', url: 'https://www.instagram.com/ubereatslatam/', platform: 'Instagram' }],
+// ── Social accounts from brand config ────────────────────────
+// Build a slug→accounts lookup from the regional accounts in config
+const REGIONAL_SOCIAL = {}
+if (BRAND.contacts && BRAND.contacts.regionalAccounts) {
+  BRAND.contacts.regionalAccounts.forEach(region => {
+    // Extract country slug from region string (e.g. "🇬🇧 United Kingdom" → "united-kingdom")
+    const name = region.region.replace(/[^\w\s]/g, '').trim().toLowerCase().replace(/\s+/g, '-')
+    // Map common region names to directory slugs
+    const slugMap = {
+      'united-kingdom-ireland': 'united-kingdom',
+      'united-kingdom': 'united-kingdom',
+      'kenya': 'kenya',
+      'india': 'india',
+      'australia': 'australia',
+      'south-africa': 'south-africa',
+      'latin-america': 'brazil',
+    }
+    const slug = slugMap[name] || name
+    REGIONAL_SOCIAL[slug] = region.accounts.map(a => ({
+      handle: a.handle, url: a.url, platform: a.platform,
+    }))
+  })
 }
 
-const GLOBAL_SOCIAL = [
-  { handle: '@Uber_Support', url: 'https://x.com/Uber_Support', platform: 'X', badge: '⚡' },
-  { handle: '@UberEats', url: 'https://x.com/UberEats', platform: 'X' },
-  { handle: 'Uber Eats', url: 'https://www.facebook.com/UberEats/', platform: 'Facebook' },
-]
+const GLOBAL_SOCIAL = BRAND.contacts
+  ? [
+      ...(BRAND.contacts.globalAccounts?.uber?.accounts?.filter(a => a.badge)?.slice(0,1) || []),
+      ...(BRAND.contacts.globalAccounts?.ubereats?.accounts?.filter(a => a.badge)?.slice(0,1) || []),
+      ...(BRAND.contacts.globalAccounts?.ubereats?.accounts?.filter(a => a.platform === 'Facebook')?.slice(0,1) || []),
+    ]
+  : []
 
 function SocialEscalationWidget({ countrySlug }) {
   const regional = REGIONAL_SOCIAL[countrySlug] || []
@@ -267,14 +274,14 @@ export default function CountryPage({ country, executives, paymentPartners, regu
   const [showContribute, setShowContribute] = useState(false)
   const [showTemplate, setShowTemplate] = useState(false)
   const [copied, setCopied] = useState(false)
-  const template = emailTemplate(country)
+  const template = BRAND.emailTemplate(country.name, country.currency_code)
   const canonicalUrl = `${SITE_URL}/directory/${country.slug}`
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: `${country.flag_emoji || ''} ${country.name} — Uber Eats Recourse Guide`,
-    description: `How to dispute an Uber Eats charge in ${country.name}: executives, payment partners, and regulators.`,
+    name: `${country.flag_emoji || ''} ${country.name} — ${BRAND.targetProduct} Recourse Guide`,
+    description: `How to dispute a ${BRAND.targetProduct} charge in ${country.name}: executives, payment partners, and regulators.`,
     url: canonicalUrl,
   }
 
@@ -287,21 +294,21 @@ export default function CountryPage({ country, executives, paymentPartners, regu
   return (
     <>
       <Head>
-        <title>{country.flag_emoji} {country.name} — Uber Eats Recourse Guide | UberCheats</title>
+        <title>{country.flag_emoji} {country.name} — {BRAND.targetProduct} Recourse Guide | {BRAND.name}</title>
         <meta
           name="description"
-          content={`How to get a refund from Uber Eats in ${country.name}. Find the relevant executives, payment dispute routes, and consumer protection agencies.`}
+          content={`How to get a refund from ${BRAND.targetProduct} in ${country.name}. Find the relevant executives, payment dispute routes, and consumer protection agencies.`}
         />
         <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:title" content={`${country.name} — Uber Eats Recourse Guide`} />
-        <meta property="og:description" content={`Country-specific guide to disputing Uber Eats charges in ${country.name}.`} />
+        <meta property="og:title" content={`${country.name} — ${BRAND.targetProduct} Recourse Guide`} />
+        <meta property="og:description" content={`Country-specific guide to disputing ${BRAND.targetProduct} charges in ${country.name}.`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
 
       <div className="min-h-screen bg-white">
         <nav className="bg-gray-900 text-white px-4 py-3 text-sm">
           <div className="max-w-5xl mx-auto flex items-center gap-2 flex-wrap">
-            <Link href="/" className="hover:underline font-bold text-base">UberCheats</Link>
+            <Link href="/" className="hover:underline font-bold text-base">{BRAND.name}</Link>
             <span className="text-gray-500">/</span>
             <Link href="/directory" className="hover:underline text-gray-300">Directory</Link>
             <span className="text-gray-500">/</span>
@@ -312,7 +319,7 @@ export default function CountryPage({ country, executives, paymentPartners, regu
         <header className="bg-gray-800 text-white py-10 px-4">
           <div className="max-w-5xl mx-auto">
             <div className="text-5xl mb-3">{country.flag_emoji || '🌍'}</div>
-            <h1 className="text-3xl font-bold mb-1">Uber Eats Recourse Guide: {country.name}</h1>
+            <h1 className="text-3xl font-bold mb-1">{BRAND.targetProduct} Recourse Guide: {country.name}</h1>
             <p className="text-gray-300 text-sm">
               {country.regions?.name} &nbsp;·&nbsp; Currency: {country.currency_code}
             </p>
@@ -418,7 +425,7 @@ export default function CountryPage({ country, executives, paymentPartners, regu
           <section className="p-4 bg-gray-50 border border-gray-200 rounded text-xs text-gray-500">
             <strong>Legal notice:</strong> All information on this page is sourced from publicly available records.
             No private phone numbers or home addresses are listed. This page is for consumer education only.
-            UberCheats is not affiliated with, authorized, or endorsed by Uber Technologies, Inc.
+            {BRAND.disclaimer.footer}
             All trademarks belong to their respective owners.
           </section>
 
@@ -431,7 +438,7 @@ export default function CountryPage({ country, executives, paymentPartners, regu
         </main>
 
         <footer className="bg-gray-800 text-gray-300 text-center py-6 mt-12 text-sm">
-          <p>UberCheats &copy; 2026 &nbsp;|&nbsp; Not affiliated with Uber Technologies Inc.</p>
+          <p>{BRAND.name} &copy; {BRAND.foundedYear} &nbsp;|&nbsp; {BRAND.disclaimer.footer}</p>
         </footer>
       </div>
     </>

@@ -1,85 +1,58 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import BRAND from '../config/brand.config'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ubercheats.info'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || BRAND.domain
 
 export default function About() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'AboutPage',
-    url: `${SITE_URL}/about`,
-    name: 'About UberCheats',
-    description: 'UberCheats is an independent consumer advocacy platform documenting Uber Eats refund failures and billing disputes worldwide.',
-    publisher: {
-      '@type': 'Organization',
-      name: 'UberCheats',
-      url: SITE_URL,
-      foundingDate: '2026',
-      areaServed: 'Worldwide',
-      description: 'Independent consumer advocacy database for Uber billing disputes.',
-    },
-  }
-
+  const { about } = BRAND
   return (
     <>
       <Head>
-        <title>About UberCheats — Independent Consumer Advocacy</title>
-        <meta name="description" content="UberCheats is an independent, consumer-run platform documenting Uber Eats refund failures and billing disputes worldwide. Not affiliated with Uber Technologies." />
+        <title>{BRAND.meta.aboutTitle}</title>
+        <meta name="description" content={BRAND.meta.aboutDescription} />
         <link rel="canonical" href={`${SITE_URL}/about`} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org', '@type': 'AboutPage',
+          url: `${SITE_URL}/about`, name: `About ${BRAND.name}`,
+          description: BRAND.meta.aboutDescription,
+          publisher: { '@type': 'Organization', name: BRAND.name, url: SITE_URL, foundingDate: BRAND.foundedYear, areaServed: 'Worldwide' },
+        }) }} />
       </Head>
 
       <div className="min-h-screen bg-gray-50">
         <nav className="bg-gray-900 text-white px-4 py-3 text-sm">
           <div className="max-w-4xl mx-auto flex items-center gap-2">
-            <Link href="/" className="font-black text-base hover:underline">UberCheats</Link>
+            <Link href="/" className="font-black text-base hover:underline">{BRAND.name}</Link>
             <span className="text-gray-500">/</span>
             <span className="text-gray-300">About</span>
           </div>
         </nav>
 
         <div className="relative bg-gray-900 overflow-hidden" style={{height: '160px'}}>
-          <img
-            src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&h=320&fit=crop&crop=center"
-            alt="Consumer advocacy and community"
-            className="absolute inset-0 w-full h-full object-cover opacity-25"
-          />
+          <img src={about.heroImage} alt={about.heroImageAlt} className="absolute inset-0 w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 flex items-center px-6">
             <div className="max-w-4xl mx-auto">
-              <h1 className="text-2xl font-black text-white">About UberCheats</h1>
+              <h1 className="text-2xl font-black text-white">About {BRAND.name}</h1>
               <p className="text-gray-400 text-sm mt-1">Independent consumer advocacy · Worldwide</p>
             </div>
           </div>
         </div>
 
-        <main className="max-w-3xl mx-auto px-4 py-14 sm:px-6">
-          <p className="text-gray-500 text-sm mb-10 mt-6">Founded 2026</p>
+        <main id="main-content" className="max-w-3xl mx-auto px-4 py-10 sm:px-6">
+          <p className="text-gray-500 text-sm mb-10">Founded {BRAND.foundedYear}</p>
 
-          <div className="prose prose-gray max-w-none space-y-6 text-gray-700 leading-relaxed">
+          <div className="space-y-8 text-gray-700 leading-relaxed">
             <section>
-              <h2 className="text-xl font-bold text-gray-900 mb-3">What is UberCheats?</h2>
-              <p>
-                UberCheats is an independent, consumer-run platform that documents Uber Eats refund failures, double
-                charges, cancelled orders without refunds, and unresponsive customer service — worldwide. Every case
-                submitted becomes a permanent, searchable public record.
-              </p>
-              <p>
-                We exist because Uber&apos;s in-app support systematically fails to resolve legitimate billing disputes,
-                leaving customers with no recourse. UberCheats gives those customers a voice, a paper trail, and a
-                practical toolkit for getting their money back.
-              </p>
+              <h2 className="text-xl font-bold text-gray-900 mb-3">What is {BRAND.name}?</h2>
+              <p>{about.heading} is an independent, consumer-run platform that documents {BRAND.targetProduct} billing failures worldwide. Every case submitted becomes a permanent, searchable public record.</p>
+              <p className="mt-3">{about.body.split('Use the')[0].trim()}</p>
             </section>
 
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-3">What we offer</h2>
               <ul className="space-y-2 list-none">
-                {[
-                  ['📝 Case documentation', 'A permanent public record of your dispute, timestamped and searchable. You can add photos, updates, and mark it resolved when you succeed.'],
-                  ['🌍 Global Recourse Directory', 'Country-specific guides covering local Uber executives, payment dispute routes (including mobile money gateways like Gladys and M-Pesa), and regulatory bodies across 40+ countries.'],
-                  ['📖 Step-by-step refund guide', 'A practical escalation ladder from in-app dispute through to small claims court, with country-specific tips.'],
-                  ['⚖️ Legal & regulatory tracker', 'A living record of government actions against Uber worldwide — including the FTC\'s 2025 lawsuit, New York\'s Attorney General suit, and Australia\'s ACCC $21M fine.'],
-                  ['📱 Uber social media contacts', 'All verified global and regional Uber and Uber Eats social handles, with guidance on which accounts respond fastest to public complaints.'],
-                ].map(([title, desc]) => (
+                {about.whatWeOffer.map(([title, desc]) => (
                   <li key={title} className="flex gap-3">
                     <span className="font-semibold text-gray-800 shrink-0">{title}:</span>
                     <span>{desc}</span>
@@ -91,43 +64,28 @@ export default function About() {
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-3">Our principles</h2>
               <ul className="space-y-2">
-                <li><strong>Facts only.</strong> We document what happened — amounts, dates, reference numbers. We don&apos;t allow speculation or unverified claims.</li>
-                <li><strong>Public records only.</strong> The executive and regulator directory uses only publicly available information from corporate announcements, LinkedIn, and government registries. No private contact details.</li>
-                <li><strong>Community-maintained.</strong> The directory is crowdsourced. All community contributions are reviewed before going live.</li>
-                <li><strong>No legal advice.</strong> We provide information and practical guidance. We are not a law firm and nothing here constitutes legal advice.</li>
-                <li><strong>User content.</strong> Case reports are submitted by users and represent their own experiences. We do not independently verify individual submissions. Users agree to post only truthful, factual accounts of their own experiences.</li>
+                {about.principles.map(([title, desc]) => (
+                  <li key={title}><strong>{title}</strong> {desc}</li>
+                ))}
+                <li><strong>User content.</strong> {BRAND.disclaimer.userContent}</li>
               </ul>
             </section>
 
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-3">Legal notice</h2>
-              <p className="p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
-                UberCheats is an independent consumer advocacy and educational platform. It is not affiliated with,
-                authorised, or endorsed by Uber Technologies, Inc. or any of its subsidiaries. All registered
-                trademarks (including Uber® and Uber Eats®) belong to their respective owners and are used
-                here solely to identify the subject matter of consumer complaints, as permitted under
-                nominative fair use. All case content is submitted by users and represents their individual
-                reported experience — UberCheats does not verify the truth of individual submissions and
-                accepts no liability for user-generated content. Nothing on this site constitutes legal advice.
-              </p>
+              <p className="p-4 bg-gray-100 rounded-lg text-sm text-gray-600">{BRAND.disclaimer.legalNotice}</p>
             </section>
           </div>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/guide" className="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg text-sm hover:bg-red-700 transition">
-              📖 Refund guide
-            </Link>
-            <Link href="/directory" className="px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg text-sm hover:bg-gray-900 transition">
-              🌍 Global directory
-            </Link>
-            <Link href="/" className="px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg text-sm hover:bg-gray-50 transition">
-              📝 Report a case
-            </Link>
+            <Link href="/guide" className={`px-4 py-2 ${BRAND.theme.primaryBtn} text-white font-semibold rounded-lg text-sm transition`}>📖 Guide</Link>
+            <Link href="/directory" className="px-4 py-2 bg-gray-800 text-white font-semibold rounded-lg text-sm hover:bg-gray-900 transition">🌍 Directory</Link>
+            <Link href="/" className="px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg text-sm hover:bg-gray-50 transition">📝 Report a case</Link>
           </div>
         </main>
 
         <footer className="bg-gray-900 text-gray-500 text-center py-6 mt-12 text-xs">
-          <p>UberCheats &copy; 2026 &nbsp;|&nbsp; Not affiliated with Uber Technologies Inc.</p>
+          <p>{BRAND.name} &copy; {BRAND.foundedYear} &nbsp;|&nbsp; {BRAND.disclaimer.footer}</p>
         </footer>
       </div>
     </>

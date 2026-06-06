@@ -1,3 +1,4 @@
+import BRAND from '../../config/brand.config'
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -155,7 +156,7 @@ export default function AdminContributions() {
   return (
     <>
       <Head>
-        <title>Admin — Contributions Review | UberCheats</title>
+        <title>Admin — Contributions Review | {BRAND.name}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
@@ -169,7 +170,7 @@ export default function AdminContributions() {
       <div className="min-h-screen bg-gray-50">
         <nav className="bg-gray-900 text-white px-4 py-3 text-sm flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Link href="/" className="font-bold text-base hover:underline">UberCheats</Link>
+            <Link href="/" className="font-bold text-base hover:underline">{BRAND.name}</Link>
             <span className="text-gray-500">/</span>
             <span className="text-gray-300">Admin</span>
             <span className="text-gray-500">/</span>

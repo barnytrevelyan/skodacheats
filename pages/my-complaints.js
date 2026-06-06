@@ -1,9 +1,10 @@
+import BRAND from '../config/brand.config'
 import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ubercheats.info'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || BRAND.domain
 
 function formatDate(dateString) {
   if (!dateString) return ''
@@ -153,7 +154,7 @@ function AddUpdateForm({ complaint, onUpdateAdded }) {
         value={text}
         onChange={(e) => setText(e.target.value)}
         rows={3}
-        placeholder="Describe what's happened since — Uber's response, new charges, escalation steps, resolution status…"
+        placeholder="Describe what's happened since — their response, new charges, escalation steps, resolution status…"
         className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
       />
 
@@ -257,7 +258,7 @@ function ComplaintCard({ complaint: initialComplaint }) {
         {!complaint.resolved && (
           <button
             onClick={async () => {
-              const note = prompt('(Optional) What resolved it? e.g. "Chargeback succeeded" or "Uber refunded after tweet"')
+              const note = prompt('(Optional) What resolved it? e.g. "Chargeback succeeded" or "Refunded after escalation"')
               const { supabase: sb } = await import('../lib/supabase')
               await sb.from('complaints').update({ resolved: true, resolved_at: new Date().toISOString(), resolution_note: note || null }).eq('id', complaint.id)
               reload()
@@ -327,14 +328,14 @@ export default function MyComplaints() {
   return (
     <>
       <Head>
-        <title>My Cases — UberCheats</title>
+        <title>My Cases — {BRAND.name}</title>
         <meta name="robots" content="noindex" />
       </Head>
 
       <div className="min-h-screen bg-white">
         <nav className="bg-gray-900 text-white px-4 py-3 text-sm flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Link href="/" className="hover:underline font-bold text-base">UberCheats</Link>
+            <Link href="/" className="hover:underline font-bold text-base">{BRAND.name}</Link>
             <span className="text-gray-500">/</span>
             <span className="text-gray-300">My Cases</span>
           </div>
@@ -374,7 +375,7 @@ export default function MyComplaints() {
         </div>
 
         <footer className="bg-gray-800 text-gray-300 text-center py-6 mt-12 text-sm">
-          <p>UberCheats &copy; 2026 &nbsp;|&nbsp; Not affiliated with Uber Technologies Inc.</p>
+          <p>{BRAND.name} &copy; {BRAND.foundedYear} &nbsp;|&nbsp; {BRAND.disclaimer.footer}</p>
         </footer>
       </div>
     </>

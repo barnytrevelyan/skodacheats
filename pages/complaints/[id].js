@@ -1,8 +1,9 @@
+import BRAND from '../../config/brand.config'
 import Head from 'next/head'
 import Link from 'next/link'
 import { fetchComplaint } from '../../lib/supabase'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ubercheats.info'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || BRAND.domain
 
 function formatDate(dateString) {
   if (!dateString) return ''
@@ -44,7 +45,7 @@ export default function ComplaintPage({ complaint }) {
     author: { '@type': 'Person', name: complaint.name },
     about: {
       '@type': 'Organization',
-      name: 'Uber Technologies Inc.',
+      name: BRAND.targetCompany,
     },
     url: canonicalUrl,
   }
@@ -57,7 +58,7 @@ export default function ComplaintPage({ complaint }) {
   return (
     <>
       <Head>
-        <title>{complaint.title} — UberCheats</title>
+        <title>{complaint.title} — {BRAND.name}</title>
         <meta
           name="description"
           content={`${complaint.category}: ${complaint.description.slice(0, 155)}…`}
@@ -65,7 +66,7 @@ export default function ComplaintPage({ complaint }) {
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:title" content={`${complaint.title} — UberCheats`} />
+        <meta property="og:title" content={`${complaint.title} — {BRAND.name}`} />
         <meta
           property="og:description"
           content={complaint.description.slice(0, 200)}
@@ -78,7 +79,7 @@ export default function ComplaintPage({ complaint }) {
       <div className="min-h-screen bg-white">
         <nav className="bg-gray-900 text-white px-4 py-3 text-sm">
           <div className="max-w-4xl mx-auto flex items-center gap-2">
-            <Link href="/" className="hover:underline font-bold text-base">UberCheats</Link>
+            <Link href="/" className="hover:underline font-bold text-base">{BRAND.name}</Link>
             <span className="text-gray-500">/</span>
             <Link href="/?tab=view" className="hover:underline text-gray-300">Cases</Link>
             <span className="text-gray-500">/</span>
@@ -127,7 +128,7 @@ export default function ComplaintPage({ complaint }) {
                 )}
                 {complaint.uber_order_number && (
                   <div>
-                    <div className="text-gray-500 text-xs uppercase font-semibold mb-1">Uber Order #</div>
+                    <div className="text-gray-500 text-xs uppercase font-semibold mb-1">Order Reference #</div>
                     <div className="font-mono text-gray-800">{complaint.uber_order_number}</div>
                   </div>
                 )}
@@ -222,7 +223,7 @@ export default function ComplaintPage({ complaint }) {
               🔗 Copy link
             </button>
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Uber refused to refund me. Case documented: ${complaint.title}`)}&url=${encodeURIComponent(canonicalUrl)}&via=UberCheats`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${BRAND.name}: case documented — ${complaint.title}`)}&url=${encodeURIComponent(canonicalUrl)}&via=${BRAND.name}`}
               target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-4 py-2 bg-gray-900 hover:bg-black text-white rounded-lg transition font-medium"
             >
@@ -235,7 +236,7 @@ export default function ComplaintPage({ complaint }) {
         </main>
 
         <footer className="bg-gray-800 text-gray-300 text-center py-6 mt-12 text-sm">
-          <p>UberCheats &copy; 2026 &nbsp;|&nbsp; Not affiliated with Uber Technologies Inc.</p>
+          <p>{BRAND.name} &copy; {BRAND.foundedYear} &nbsp;|&nbsp; {BRAND.disclaimer.footer}</p>
         </footer>
       </div>
     </>

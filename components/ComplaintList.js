@@ -1,16 +1,13 @@
+import BRAND from '../config/brand.config'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-const CATEGORIES = [
-  'All',
-  'Refund Not Issued',
-  'Charged Twice',
-  'Order Cancelled but Not Refunded',
-  'Customer Service Unresponsive',
-  'Other',
-]
-
-export default function ComplaintList() {
+export default function ComplaintList({ categories }) {
+  // Accept brand categories as a prop; fall back to defaults
+  const CATEGORIES = ['All', ...(categories || [
+    'Refund Not Issued', 'Charged Twice',
+    'Order Cancelled but Not Refunded', 'Customer Service Unresponsive', 'Other',
+  ])]
   const [complaints, setComplaints] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -145,7 +142,7 @@ export default function ComplaintList() {
                   <div><span className="font-semibold">Order Date:</span> {complaint.order_date}</div>
                 )}
                 {complaint.uber_order_number && (
-                  <div><span className="font-semibold">Uber Order #:</span> {complaint.uber_order_number}</div>
+                  <div><span className="font-semibold">Order Ref #:</span> {complaint.uber_order_number}</div>
                 )}
               </div>
 

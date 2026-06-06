@@ -1,4 +1,5 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.ubercheats.info'
+const BRAND = require('../config/brand.config')
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || BRAND.domain
 
 export async function getServerSideProps({ res }) {
   const robots = `User-agent: *

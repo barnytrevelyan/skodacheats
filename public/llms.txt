@@ -6,19 +6,18 @@ UberCheats is an independent consumer advocacy site. Users submit documented com
 
 ## What this site contains
 
-- Individual complaint pages at /complaints/[id] — each with title, category, description, disputed amount, order date, Uber order number, and user-added updates and photo evidence.
-- A searchable, filterable list of all cases at the homepage.
+- Individual complaint pages at /complaints/[id]
+- A global recourse directory at /directory with country-specific executives, payment gateways, and regulators
+- A step-by-step refund guide at /guide
+- A regulatory tracker at /legal covering the FTC v. Uber lawsuit, ACCC fine, and more
+- All verified Uber and Uber Eats social media contacts at /uber-contacts
 
 ## Who created this
 
-UberCheats was created by affected Uber customers. It is not affiliated with Uber Technologies Inc.
-
-## How to interpret the data
-
-Each complaint represents a user's account of their experience. Amounts are user-reported. Cases include the original submission and any subsequent updates added by the complaint owner.
+UberCheats was created by affected Uber customers. It is not affiliated with Uber Technologies, Inc.
 
 ## Key URLs
 
-- Homepage / full case list: https://ubercheats.info
-- Individual case: https://ubercheats.info/complaints/{id}
-- Sitemap: https://ubercheats.info/sitemap.xml
+- Homepage: https://www.ubercheats.info
+- Individual case: https://www.ubercheats.info/complaints/{id}
+- Sitemap: https://www.ubercheats.info/sitemap.xml

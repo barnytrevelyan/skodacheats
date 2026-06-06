@@ -78,7 +78,6 @@ export default function DirectoryIndex({ countries }) {
               that can actually get your money back from Uber Eats.
             </p>
           </div>
-          </div>
         </div>
 
         <main id="main-content" className="max-w-6xl mx-auto px-4 py-12 sm:px-6">

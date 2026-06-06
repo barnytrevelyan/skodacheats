@@ -33,4 +33,28 @@ export default async function handler(req, res) {
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
+
+  if (req.method === 'PATCH') {
+    try {
+      const { file_urls } = req.body
+      if (!file_urls || !Array.isArray(file_urls)) {
+        return res.status(400).json({ error: 'file_urls array required' })
+      }
+
+      const { data, error } = await supabase
+        .from('complaints')
+        .update({ file_urls })
+        .eq('id', id)
+        .select()
+        .single()
+
+      if (error) throw error
+      return res.status(200).json({ complaint: data })
+    } catch (error) {
+      return res.status(500).json({ error: error.message })
+    }
+  }
+
+  res.status(405).json({ error: 'Method not allowed' })
+
 }

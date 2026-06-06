@@ -1,4 +1,15 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { supabase } from '../lib/supabase'
+
+async function uploadFile(file, complaintId) {
+  const ext = file.name.split('.').pop()
+  const path = `complaint-${complaintId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const { data, error } = await supabase.storage.from('complaints').upload(path, file, { upsert: false })
+  if (error) throw error
+  const { data: urlData } = supabase.storage.from('complaints').getPublicUrl(data.path)
+  return urlData.publicUrl
+}
+
 
 const CATEGORIES = [
   'Refund Not Issued',
@@ -80,6 +91,7 @@ export default function ComplaintForm({ onSubmitSuccess }) {
     uberOrderNumber: '',
   })
   const [uploadedFiles, setUploadedFiles] = useState([])
+  const fileRef = useRef()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -124,6 +136,25 @@ export default function ComplaintForm({ onSubmitSuccess }) {
         throw new Error(responseData.error || 'Failed to submit complaint')
       }
 
+      const responseData = await response.json()
+      const complaintId = responseData.complaint?.id
+
+      // Upload any evidence files
+      if (uploadedFiles.length > 0 && complaintId) {
+        try {
+          const urls = await Promise.all(uploadedFiles.map((f) => uploadFile(f, complaintId)))
+          // Attach file URLs to the complaint
+          await fetch(`/api/complaints/${complaintId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file_urls: urls }),
+          })
+        } catch (uploadErr) {
+          console.error('File upload failed:', uploadErr)
+          // Don't fail the whole submission over a file upload error
+        }
+      }
+
       setSuccess(true)
       setFormData({
         name: '',
@@ -137,6 +168,7 @@ export default function ComplaintForm({ onSubmitSuccess }) {
         uberOrderNumber: '',
       })
       setUploadedFiles([])
+      if (fileRef.current) fileRef.current.value = ''
 
       if (onSubmitSuccess) {
         onSubmitSuccess()
@@ -286,11 +318,20 @@ export default function ComplaintForm({ onSubmitSuccess }) {
         />
       </div>
 
-      <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-        <label className="block text-gray-700 font-semibold mb-2">📎 Upload Evidence (Coming Soon)</label>
-        <p className="text-sm text-gray-600">
-          File uploads are coming soon. For now, describe your evidence in the detailed description field. Include order numbers, amounts, dates, and what happened.
-        </p>
+      <div className="mb-6">
+        <label className="block text-gray-700 font-semibold mb-2">📎 Upload Evidence (optional)</label>
+        <input
+          ref={fileRef}
+          type="file"
+          multiple
+          accept="image/*,.pdf,.doc,.docx"
+          onChange={handleFileChange}
+          className="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:font-medium hover:file:bg-blue-100"
+        />
+        {uploadedFiles.length > 0 && (
+          <p className="text-xs text-gray-500 mt-1">{uploadedFiles.length} file(s) selected</p>
+        )}
+        <p className="text-xs text-gray-500 mt-1">Screenshots, PDFs, receipts — anything that supports your case. Uploaded securely.</p>
       </div>
 
       <button

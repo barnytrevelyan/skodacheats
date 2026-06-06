@@ -27,7 +27,7 @@ const BRAND = {
   // ── SEO / metadata ─────────────────────────────────────────────────────────
   meta: {
     homeTitle: 'SkodaCheats — Škoda Warranty, Finance & Dealer Dispute Database',
-    homeDescription: 'Public record of Škoda warranty failures, PCP mis-selling, dealer fraud, and unresolved service disputes. Submit your case, find country-specific recourse, and help hold Škoda accountable.',
+    homeDescription: 'Public record of Škoda warranty failures, PCP finance disputes, dealer mis-selling, and unresolved service disputes. Submit your case, find country-specific recourse, and help hold Škoda accountable.',
     guideTitle: 'How to Resolve a Škoda Dispute — Complete Guide 2026 | SkodaCheats',
     guideDescription: 'Step-by-step guide for Škoda owners: dealer escalation, Motor Ombudsman, FCA complaint, Trading Standards, small claims court. Works in UK, Germany, Czech Republic, Ireland, Australia and more.',
     legalTitle: 'Škoda & VW Group Legal Tracker — Dieselgate, PCP Mis-selling | SkodaCheats',
@@ -58,7 +58,7 @@ const BRAND = {
   // ── Homepage ───────────────────────────────────────────────────────────────
   hero: {
     badge: 'Independent consumer advocacy — not affiliated with Škoda Auto',
-    headline: 'Škoda let you down.',
+    headline: 'Did Škoda let you down?',
     subheadline: 'We make it public.',
     body: 'A global, crowdsourced record of Škoda warranty failures, PCP mis-selling, dealer fraud, and unresolved service disputes. Every case is a permanent public record. Find out how to fight back.',
     imageUrl: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1400&h=600&fit=crop&crop=center',
@@ -73,7 +73,7 @@ const BRAND = {
   },
 
   reportReasons: [
-    '✓ Creates a permanent public record that Škoda cannot delete',
+    '✓ Creates a public record, timestamped and searchable',
     '✓ Helps other owners facing the same problem find your case',
     '✓ Builds evidence for regulatory and legal action',
     '✓ You can add photos, service records, and updates at any time',
@@ -106,7 +106,7 @@ const BRAND = {
 
   about: {
     heading: 'About SkodaCheats',
-    body: 'SkodaCheats is an independent, consumer-run platform documenting Škoda vehicle defects, PCP finance mis-selling, dealer fraud, and unresolved service disputes worldwide. We exist because Škoda dealerships and Volkswagen Group systematically fail to resolve legitimate consumer complaints. Every case here is permanent. Use the Global Directory for country-specific escalation routes, the Dispute Guide for step-by-step help, and the Legal Tracker to understand your rights.',
+    body: 'SkodaCheats is an independent, consumer-run platform documenting Škoda vehicle defects, PCP finance mis-selling, dealer fraud, and unresolved service disputes worldwide. We exist because many owners report that Škoda dealerships and Volkswagen Group fail to resolve legitimate consumer complaints. Every case here is permanent. Use the Global Directory for country-specific escalation routes, the Dispute Guide for step-by-step help, and the Legal Tracker to understand your rights.',
     heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=320&fit=crop&crop=faces',
     heroImageAlt: 'Consumer advocating for their rights',
     whatWeOffer: [
@@ -310,7 +310,7 @@ const BRAND = {
           'VWFS separately fined £5.4 million (October 2024) for failing customers in financial difficulty — plus £21.5 million redress to 110,000 customers',
         ],
         outcome: 'PS26/3 confirmed. VWFS is challenging via judicial review (May 2026) but FCA has ordered continued implementation. DEADLINES: File before 30 June 2026 for post-2014 agreements (response by 30 Sept 2026). File before 31 Aug 2026 for 2007–2014 agreements (response by 30 Nov 2026). Final deadline: 31 August 2027.',
-        relevance: 'If you took out a PCP or HP agreement on a Škoda between 6 April 2007 and 1 November 2024, you may be entitled to compensation. File a free complaint at customer.vwfs.co.uk/commission-complaints.html NOW to get into the priority queue. No solicitor or claims company needed.',
+        relevance: 'If you took out a PCP or HP agreement on a Škoda between 6 April 2007 and 1 November 2024, you may be entitled to compensation. File a free complaint at customer.vwfs.co.uk/commission-complaints.html to register your claim. No solicitor needed. Note: SkodaCheats is not FCA-authorised — this is general consumer information, not financial advice. Seek independent financial advice for your specific situation.',
         sources: [
           { label: 'FCA PS26/3 — Motor Finance Redress Scheme', url: 'https://www.fca.org.uk/publications/policy-statements/ps26-3-motor-finance-consumer-redress-scheme' },
           { label: 'FCA consumer guidance — car finance', url: 'https://www.fca.org.uk/consumers/car-finance-complaints' },
@@ -542,6 +542,25 @@ Yours sincerely,
     { code: 'INR', symbol: '₹',   name: 'Indian Rupee',      rate: 83.12 },
     { code: 'ZAR', symbol: 'R',   name: 'South African Rand',rate: 18.65 },
   ],
+
+
+  // ── Privacy & legal pages config ──────────────────────────────────────────
+  privacy: {
+    controllerName: 'SkodaCheats',
+    controllerContact: 'privacy@skodacheats.info',
+    dataProcessors: [
+      { name: 'Supabase Inc.', location: 'United States', purpose: 'Database hosting and file storage', mechanism: 'Standard Contractual Clauses (SCCs)' },
+      { name: 'Vercel Inc.', location: 'United States', purpose: 'Website hosting and analytics', mechanism: 'Standard Contractual Clauses (SCCs)' },
+    ],
+    retentionPeriod: '3 years from submission, or upon valid erasure request',
+    dataCollected: ['Name (displayed publicly)', 'Email address (private)', 'Complaint description (displayed publicly)', 'Vehicle details and VIN (if provided)', 'Financial amount disputed', 'Uploaded evidence files'],
+    legalBasis: 'Consent (Article 6(1)(a) GDPR) — provided at point of submission',
+    cookieTypes: [
+      { name: 'Vercel Analytics', type: 'Analytics', purpose: 'Counts page visits and traffic sources. No personally identifiable information stored.', required: false },
+    ],
+    icoRegistration: 'Pending — apply at ico.org.uk/registration',
+    lastUpdated: 'June 2026',
+  },
 
   // ── Complaint form field labels ────────────────────────────────────────────
   formFields: {

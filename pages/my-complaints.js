@@ -254,6 +254,22 @@ function ComplaintCard({ complaint: initialComplaint }) {
         <Link href={`/complaints/${complaint.id}`} className="text-gray-500 hover:text-gray-700">
           View public page →
         </Link>
+        {!complaint.resolved && (
+          <button
+            onClick={async () => {
+              const note = prompt('(Optional) What resolved it? e.g. "Chargeback succeeded" or "Uber refunded after tweet"')
+              const { supabase: sb } = await import('../lib/supabase')
+              await sb.from('complaints').update({ resolved: true, resolved_at: new Date().toISOString(), resolution_note: note || null }).eq('id', complaint.id)
+              reload()
+            }}
+            className="text-green-600 hover:text-green-800 font-medium"
+          >
+            ✅ Mark resolved
+          </button>
+        )}
+        {complaint.resolved && (
+          <span className="text-green-600 font-semibold text-xs">✅ Resolved</span>
+        )}
       </div>
 
       {showUpdateForm && (

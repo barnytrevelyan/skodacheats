@@ -15,6 +15,7 @@ export default function ComplaintList() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     fetchComplaints()
@@ -94,11 +95,31 @@ export default function ComplaintList() {
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-gray-600 mb-4">
-            {complaints.length} {complaints.length === 1 ? 'case' : 'cases'} reported
-          </p>
+          {/* Search */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search cases by keyword, amount, or order number…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
+          />
+        </div>
 
-          {complaints.map((complaint) => (
+        {(() => {
+          const filtered = complaints.filter(c =>
+            !search.trim() ||
+            [c.title, c.description, c.name, c.uber_order_number, c.category]
+              .some(f => f?.toLowerCase().includes(search.toLowerCase()))
+          )
+          return (
+            <>
+              <p className="text-gray-500 text-sm mb-4">
+                {filtered.length} {filtered.length === 1 ? 'case' : 'cases'}
+                {search && ` matching "${search}"`}
+              </p>
+
+              {filtered.map((complaint) => (
             <div key={complaint.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition duration-200">
               <div className="flex items-start justify-between mb-2">
                 <div>
@@ -154,6 +175,29 @@ export default function ComplaintList() {
                   </div>
                 </div>
               )}
+              <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                <div className="flex items-center gap-3">
+                  <Link href={`/complaints/${complaint.id}`} className="text-xs text-blue-600 hover:underline">
+                    View full case →
+                  </Link>
+                  {complaint.resolved && (
+                    <span className="text-xs bg-green-100 text-green-800 font-semibold px-2 py-0.5 rounded-full">
+                      ✅ Resolved
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={() => {
+                    const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/complaints/${complaint.id}`
+                    navigator.clipboard?.writeText(url)
+                    alert('Link copied!')
+                  }}
+                  className="text-xs text-gray-400 hover:text-gray-600 transition"
+                  title="Copy link to this case"
+                >
+                  🔗 Share
+                </button>
+              </div>
             </div>
           ))}
         </div>

@@ -85,7 +85,17 @@ export default function ComplaintPage({ complaint }) {
               <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-3">
                 {complaint.category}
               </span>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{complaint.title}</h1>
+              <div className="flex items-start gap-3 flex-wrap">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">{complaint.title}</h1>
+                {complaint.resolved && (
+                  <span className="shrink-0 mt-1 bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full">✅ Resolved</span>
+                )}
+              </div>
+              {complaint.resolution_note && (
+                <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+                  <strong>Resolution:</strong> {complaint.resolution_note}
+                </div>
+              )}
               <div className="text-sm text-gray-500 flex flex-wrap gap-4">
                 <span>Reported by <strong className="text-gray-700">{complaint.name}</strong></span>
                 <span>{formatDate(complaint.created_at)}</span>
@@ -195,8 +205,22 @@ export default function ComplaintPage({ complaint }) {
             </Link>
           </div>
 
-          <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-gray-500 hover:text-gray-800 underline">
+          {/* Share buttons */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm">
+            <button
+              onClick={() => navigator.clipboard?.writeText(typeof window !== 'undefined' ? window.location.href : '').then(() => alert('Link copied!'))}
+              className="flex items-center gap-1.5 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition font-medium"
+            >
+              🔗 Copy link
+            </button>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Uber refused to refund me. Case documented: ${complaint.title}`)}&url=${encodeURIComponent(canonicalUrl)}&via=UberCheats`}
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-4 py-2 bg-gray-900 hover:bg-black text-white rounded-lg transition font-medium"
+            >
+              𝕏 Share on X
+            </a>
+            <Link href="/" className="text-gray-400 hover:text-gray-600 text-xs underline ml-2">
               ← Back to all cases
             </Link>
           </div>

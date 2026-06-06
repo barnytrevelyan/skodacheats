@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import ComplaintForm from '../components/ComplaintForm'
@@ -14,13 +14,7 @@ const jsonLd = {
       '@id': `${SITE_URL}/#website`,
       url: SITE_URL,
       name: 'UberCheats',
-      description:
-        'Public database of Uber refund failures, double charges, and billing disputes. Document your case and help others affected by the same problems.',
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/?q={search_term_string}` },
-        'query-input': 'required name=search_term_string',
-      },
+      description: 'Public database of Uber refund failures, double charges, and billing disputes worldwide.',
     },
     {
       '@type': 'Organization',
@@ -32,12 +26,50 @@ const jsonLd = {
   ],
 }
 
+const CATEGORIES = [
+  { label: 'Refund Not Issued', icon: '💸', desc: 'Charged but never refunded' },
+  { label: 'Charged Twice', icon: '🔁', desc: 'Duplicate charges on one order' },
+  { label: 'Order Cancelled but Not Refunded', icon: '❌', desc: 'Cancelled order, kept the money' },
+  { label: 'Customer Service Unresponsive', icon: '🔇', desc: 'Support ignored or stonewalled' },
+  { label: 'Other', icon: '⚠️', desc: 'Other billing or service failure' },
+]
+
+function StatsBar() {
+  const [stats, setStats] = useState(null)
+  useEffect(() => {
+    fetch('/api/stats').then(r => r.json()).then(setStats).catch(() => {})
+  }, [])
+
+  const fmt = (n) => n?.toLocaleString() ?? '—'
+  const fmtUSD = (n) => n ? `$${n.toLocaleString()}` : '—'
+
+  return (
+    <div className="bg-red-700 text-white">
+      <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
+        <div>
+          <div className="text-2xl font-black">{fmt(stats?.totalCases)}</div>
+          <div className="text-red-200 text-xs uppercase tracking-wide font-semibold">Cases documented</div>
+        </div>
+        <div>
+          <div className="text-2xl font-black">{fmtUSD(stats?.totalUSD)}</div>
+          <div className="text-red-200 text-xs uppercase tracking-wide font-semibold">USD disputed</div>
+        </div>
+        <div className="col-span-2 sm:col-span-1">
+          <div className="text-2xl font-black">{fmt(stats?.resolvedCases)}</div>
+          <div className="text-red-200 text-xs uppercase tracking-wide font-semibold">Cases resolved</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState('report')
   const [refreshKey, setRefreshKey] = useState(0)
+  const [heroLoaded, setHeroLoaded] = useState(false)
 
   const handleSubmitSuccess = () => {
-    setRefreshKey((prev) => prev + 1)
+    setRefreshKey(prev => prev + 1)
     setTimeout(() => setActiveTab('view'), 1000)
   }
 
@@ -45,99 +77,139 @@ export default function Home() {
     <>
       <Head>
         <title>UberCheats — Uber Refund Failures &amp; Billing Disputes Database</title>
-        <meta
-          name="description"
-          content="Public record of Uber refund failures, double charges, and unresolved billing disputes. Submit your case, browse documented complaints, and help hold Uber accountable."
-        />
+        <meta name="description" content="Public record of Uber refund failures, double charges, and unresolved billing disputes worldwide. Submit your case, find country-specific recourse, and help hold Uber accountable." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href={SITE_URL} />
         <link rel="icon" href="/favicon.ico" />
-
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content="UberCheats — Uber Refund Failures & Billing Disputes" />
-        <meta
-          property="og:description"
-          content="Public record of Uber refund failures, double charges, and unresolved billing disputes. Submit your case and help others."
-        />
+        <meta property="og:description" content="Public record of Uber refund failures and billing disputes. Submit your case and find country-specific recourse." />
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
-
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="UberCheats — Uber Refund Failures & Billing Disputes" />
-        <meta
-          name="twitter:description"
-          content="Public record of Uber refund failures, double charges, and unresolved billing disputes."
-        />
-
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
 
-      <div className="min-h-screen bg-white">
-        <header className="relative h-96 bg-gray-900 overflow-hidden">
+      <div className="min-h-screen bg-gray-50">
+
+        {/* Top nav */}
+        <nav className="bg-gray-900 text-white px-4 py-3 text-sm">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <span className="font-black text-lg tracking-tight">UberCheats</span>
+            <div className="flex items-center gap-4 text-gray-300 text-xs">
+              <Link href="/directory" className="hover:text-white transition">🌍 Directory</Link>
+              <Link href="/guide" className="hover:text-white transition">📖 Guide</Link>
+              <Link href="/legal" className="hover:text-white transition">⚖️ Legal</Link>
+              <Link href="/uber-contacts" className="hover:text-white transition">📱 Contacts</Link>
+              <Link href="/my-complaints" className="hidden sm:inline hover:text-white transition">My Cases</Link>
+            </div>
+          </div>
+        </nav>
+
+        {/* Stats bar */}
+        <StatsBar />
+
+        {/* Hero */}
+        <header className="relative overflow-hidden bg-gray-900 min-h-[420px] flex items-center">
           <img
-            src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=400&fit=crop"
-            alt="Documents and complaints"
-            className="absolute inset-0 w-full h-full object-cover opacity-40"
+            src="https://images.unsplash.com/photo-1580910051074-3eb694886505?w=1400&h=500&fit=crop&crop=center"
+            alt="Frustrated consumer with phone"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${heroLoaded ? 'opacity-25' : 'opacity-0'}`}
+            onLoad={() => setHeroLoaded(true)}
           />
-          <div className="absolute inset-0 bg-black opacity-40"></div>
-          <div className="relative max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8 flex flex-col justify-center h-full">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">UberCheats</h1>
-            <p className="text-lg text-gray-100 max-w-2xl">
-              A public record of Uber refund and charging failures. Document your case, browse others, and help build evidence of systemic problems.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-4">
-              <Link
-                href="/directory"
-                className="inline-block bg-white text-gray-900 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100 transition text-sm"
-              >
-                🌍 Global Recourse Directory
-              </Link>
-              <Link
-                href="/my-complaints"
-                className="inline-block text-sm text-gray-300 underline hover:text-white transition self-center"
-              >
-                Already submitted? Manage your case →
-              </Link>
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-gray-900/60" />
+          <div className="relative max-w-6xl mx-auto px-4 py-16 sm:px-6 w-full">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 bg-red-700/30 border border-red-600/40 text-red-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-5">
+                <span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
+                Independent consumer advocacy — not affiliated with Uber
+              </div>
+              <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+                Uber won&apos;t refund you.<br />
+                <span className="text-red-400">We document it.</span>
+              </h1>
+              <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+                A global, crowdsourced record of Uber Eats refund failures, double charges, and support stonewalling.
+                Every case is a permanent public record. Find out how to fight back in your country.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => setActiveTab('report')}
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition text-sm"
+                >
+                  📝 Report your case
+                </button>
+                <Link href="/guide"
+                  className="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg transition text-sm border border-white/20">
+                  📖 How to get your money back
+                </Link>
+                <Link href="/directory"
+                  className="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-lg transition text-sm border border-white/20">
+                  🌍 Your country&apos;s recourse options
+                </Link>
+              </div>
             </div>
           </div>
         </header>
 
-        <main className="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mb-6 flex gap-2 border-b border-gray-300">
-            <button
-              onClick={() => setActiveTab('report')}
-              className={`px-4 py-3 font-semibold transition duration-200 border-b-2 ${
-                activeTab === 'report'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              Report an Issue
-            </button>
-            <button
-              onClick={() => setActiveTab('view')}
-              className={`px-4 py-3 font-semibold transition duration-200 border-b-2 ${
-                activeTab === 'view'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              View Cases
-            </button>
+        {/* FTC alert banner */}
+        <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
+          <div className="max-w-6xl mx-auto flex items-start gap-3 text-sm">
+            <span className="text-amber-600 text-base shrink-0 mt-0.5">⚖️</span>
+            <p className="text-amber-800">
+              <strong>Legal update:</strong> The FTC and 21 US states have sued Uber for deceptive billing and cancellation practices (April 2025, expanded Dec 2025). Australia&apos;s ACCC fined Uber $21M for misleading consumers.{' '}
+              <Link href="/legal" className="underline font-semibold hover:text-amber-900">Full legal tracker →</Link>
+            </p>
+          </div>
+        </div>
+
+        <main className="max-w-6xl mx-auto px-4 py-12 sm:px-6">
+
+          {/* Category cards */}
+          <section className="mb-12">
+            <h2 className="text-lg font-bold text-gray-800 mb-4">What happened to you?</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat.label}
+                  onClick={() => { setActiveTab('report') }}
+                  className="p-4 bg-white border border-gray-200 rounded-xl hover:border-red-400 hover:shadow-sm transition text-left group"
+                >
+                  <div className="text-2xl mb-2">{cat.icon}</div>
+                  <div className="text-xs font-bold text-gray-800 group-hover:text-red-700 leading-snug">{cat.label}</div>
+                  <div className="text-xs text-gray-400 mt-1">{cat.desc}</div>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* Tabs */}
+          <div className="mb-6 flex gap-2 border-b border-gray-200">
+            {['report', 'view'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-5 py-3 font-semibold text-sm transition border-b-2 ${
+                  activeTab === tab
+                    ? 'border-red-600 text-red-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                {tab === 'report' ? '📝 Report an Issue' : '🗂️ View All Cases'}
+              </button>
+            ))}
           </div>
 
           {activeTab === 'report' && (
             <div className="max-w-2xl">
-              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h2 className="font-semibold text-blue-900 mb-2">Why Report Here?</h2>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  <li>✓ Creates a permanent public record of Uber&apos;s refund failures</li>
-                  <li>✓ Helps others facing the same problem find your case</li>
-                  <li>✓ Builds evidence for potential collective or legal action</li>
-                  <li>✓ You can add photos and updates to your case at any time</li>
+              <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <h2 className="font-bold text-red-900 mb-2">Why document your case here?</h2>
+                <ul className="text-sm text-red-800 space-y-1">
+                  <li>✓ Creates a <strong>permanent public record</strong> — Uber can&apos;t delete it</li>
+                  <li>✓ Helps others in the same situation find your case via search</li>
+                  <li>✓ Builds the evidence base for regulatory and legal action</li>
+                  <li>✓ You can <strong>add photos and updates</strong> to your case at any time</li>
+                  <li>✓ Mark it <strong>resolved</strong> when you get your money back — and share what worked</li>
                 </ul>
               </div>
               <ComplaintForm onSubmitSuccess={handleSubmitSuccess} />
@@ -146,28 +218,92 @@ export default function Home() {
 
           {activeTab === 'view' && <ComplaintList key={refreshKey} />}
 
-          <section className="mt-12 p-6 bg-gray-100 rounded-lg text-sm text-gray-700">
-            <h2 className="font-semibold mb-2">About UberCheats</h2>
+          {/* Three pillars */}
+          <section className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              {
+                icon: '📖',
+                title: 'Step-by-step refund guide',
+                desc: 'From in-app dispute to small claims court — the complete escalation ladder, with country-specific advice.',
+                href: '/guide',
+                cta: 'Read the guide',
+              },
+              {
+                icon: '🌍',
+                title: 'Global recourse directory',
+                desc: 'Executives, payment dispute routes, and regulators for 40+ countries. Find who can actually help.',
+                href: '/directory',
+                cta: 'Find your country',
+              },
+              {
+                icon: '⚖️',
+                title: 'Legal & regulatory tracker',
+                desc: 'FTC lawsuit, ACCC $21M fine, NY AG suit, 21-state action. Uber\'s global accountability record.',
+                href: '/legal',
+                cta: 'See the cases',
+              },
+            ].map(p => (
+              <div key={p.title} className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col">
+                <div className="text-3xl mb-3">{p.icon}</div>
+                <h3 className="font-bold text-gray-900 mb-2">{p.title}</h3>
+                <p className="text-sm text-gray-600 flex-1 mb-4">{p.desc}</p>
+                <Link href={p.href}
+                  className="text-sm font-semibold text-red-600 hover:text-red-800 hover:underline">
+                  {p.cta} →
+                </Link>
+              </div>
+            ))}
+          </section>
+
+          {/* About */}
+          <section className="mt-12 p-6 bg-white border border-gray-200 rounded-xl text-sm text-gray-600">
+            <h2 className="font-bold text-gray-800 mb-2">About UberCheats</h2>
             <p>
-              UberCheats is an independent, consumer-run documentation of Uber service failures
-              related to refunds and billing. This site exists because Uber systematically fails to
-              resolve these issues. Every case submitted here becomes a permanent public record.
-              Your story matters — it helps expose patterns and supports others in the same situation.
-            </p>
-            <p className="mt-2">
-              Use the <Link href="/directory" className="text-blue-700 underline">Global Recourse Directory</Link> to
-              find country-specific executives, payment dispute routes, and regulatory bodies.
+              UberCheats is an independent, consumer-run platform documenting Uber and Uber Eats billing failures worldwide.
+              We exist because Uber systematically fails to resolve legitimate refund requests, leaving customers with no recourse
+              through official channels. Every case here is permanent. Use the{' '}
+              <Link href="/directory" className="text-red-600 underline">Global Directory</Link> for country-specific escalation routes,
+              the <Link href="/guide" className="text-red-600 underline">Refund Guide</Link> for step-by-step help,
+              and the <Link href="/legal" className="text-red-600 underline">Legal Tracker</Link> to understand your rights.
             </p>
           </section>
         </main>
 
-        <footer className="bg-gray-800 text-gray-300 text-center py-6 mt-12 text-sm">
-          <p>UberCheats &copy; 2026 &nbsp;|&nbsp; Not affiliated with Uber Technologies Inc.</p>
-          <p className="mt-1 text-gray-500 space-x-4">
-            <Link href="/directory" className="hover:text-gray-300 underline">Global Directory</Link>
-            <Link href="/uber-contacts" className="hover:text-gray-300 underline">Uber Contacts</Link>
-            <Link href="/my-complaints" className="hover:text-gray-300 underline">Manage your case</Link>
-          </p>
+        <footer className="bg-gray-900 text-gray-400 py-10 mt-12">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-sm mb-8">
+              <div>
+                <div className="font-bold text-white mb-2">UberCheats</div>
+                <p className="text-xs text-gray-500">Independent consumer advocacy. Not affiliated with Uber Technologies, Inc.</p>
+              </div>
+              <div>
+                <div className="font-semibold text-gray-300 mb-2 text-xs uppercase tracking-wide">Resources</div>
+                <ul className="space-y-1">
+                  <li><Link href="/guide" className="hover:text-white transition">Refund Guide</Link></li>
+                  <li><Link href="/legal" className="hover:text-white transition">Legal Tracker</Link></li>
+                  <li><Link href="/directory" className="hover:text-white transition">Global Directory</Link></li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-semibold text-gray-300 mb-2 text-xs uppercase tracking-wide">Community</div>
+                <ul className="space-y-1">
+                  <li><Link href="/" className="hover:text-white transition">Report a Case</Link></li>
+                  <li><Link href="/my-complaints" className="hover:text-white transition">Manage My Cases</Link></li>
+                  <li><Link href="/uber-contacts" className="hover:text-white transition">Uber Contacts</Link></li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-semibold text-gray-300 mb-2 text-xs uppercase tracking-wide">Legal</div>
+                <p className="text-xs text-gray-500">
+                  All information is consumer-submitted or sourced from public records.
+                  UberCheats is not a law firm and does not provide legal advice.
+                </p>
+              </div>
+            </div>
+            <div className="border-t border-gray-800 pt-6 text-xs text-gray-600 text-center">
+              UberCheats &copy; 2026 &nbsp;|&nbsp; Not affiliated with Uber Technologies Inc. &nbsp;|&nbsp; All trademarks belong to their respective owners.
+            </div>
+          </div>
         </footer>
       </div>
     </>

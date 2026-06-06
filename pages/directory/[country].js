@@ -144,12 +144,12 @@ function SocialEscalationWidget({ countrySlug }) {
     <div className="p-5 bg-gray-900 text-white rounded-xl">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-bold text-white">📱 Social media escalation</h3>
-        <Link href="/uber-contacts" className="text-xs text-gray-400 hover:text-white underline">
+        <Link href={`/${BRAND.contactsPageSlug}`} className="text-xs text-gray-400 hover:text-white underline">
           All accounts →
         </Link>
       </div>
       <p className="text-xs text-gray-400 mb-4">
-        Public posts with your order reference + screenshot get faster responses than in-app tickets.
+        Public posts with your registration number, VIN, or case reference + a photo get faster responses than customer service tickets.
         Tag multiple accounts at once for best results.
       </p>
       {regional.length > 0 && (

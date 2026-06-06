@@ -8,7 +8,7 @@ const STATIC_PAGES = [
   { url: '/guide',         changefreq: 'weekly',  priority: '0.9' },
   { url: '/legal',         changefreq: 'weekly',  priority: '0.8' },
   { url: '/directory',     changefreq: 'daily',   priority: '0.9' },
-  { url: '/uber-contacts', changefreq: 'weekly',  priority: '0.7' },
+  { url: `/${BRAND.contactsPageSlug}`, changefreq: 'weekly', priority: '0.7' },
 ]
 
 function generateSitemap(complaints, countries) {

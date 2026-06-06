@@ -72,7 +72,7 @@ export default function ComplaintList({ categories }) {
       <div className="mb-5">
         <input
           type="text"
-          placeholder="Search cases by keyword, amount, or order number…"
+          placeholder="Search by keyword, VIN, registration, or reference number…"
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-400"
@@ -142,7 +142,7 @@ export default function ComplaintList({ categories }) {
                   <div><span className="font-semibold">Order Date:</span> {complaint.order_date}</div>
                 )}
                 {complaint.uber_order_number && (
-                  <div><span className="font-semibold">Order Ref #:</span> {complaint.uber_order_number}</div>
+                  <div><span className="font-semibold">Case / Vehicle Ref #:</span> {complaint.uber_order_number}</div>
                 )}
               </div>
 

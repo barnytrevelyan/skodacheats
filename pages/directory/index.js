@@ -101,7 +101,7 @@ export default function DirectoryIndex({ countries }) {
               <p className="font-semibold text-sm">📱 Need social media contacts?</p>
               <p className="text-xs text-gray-400 mt-0.5">All verified global + regional handles for public complaint escalation</p>
             </div>
-            <Link href="/uber-contacts"
+            <Link href={`/${BRAND.contactsPageSlug}`}
               className="shrink-0 ml-4 bg-white text-gray-900 font-semibold text-sm px-4 py-2 rounded-lg hover:bg-gray-100 transition">
               View all →
             </Link>

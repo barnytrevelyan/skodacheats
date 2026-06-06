@@ -128,7 +128,7 @@ export default function ComplaintPage({ complaint }) {
                 )}
                 {complaint.uber_order_number && (
                   <div>
-                    <div className="text-gray-500 text-xs uppercase font-semibold mb-1">Order Reference #</div>
+                    <div className="text-gray-500 text-xs uppercase font-semibold mb-1">Case / Vehicle Ref #</div>
                     <div className="font-mono text-gray-800">{complaint.uber_order_number}</div>
                   </div>
                 )}

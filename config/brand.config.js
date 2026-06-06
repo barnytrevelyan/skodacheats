@@ -61,8 +61,8 @@ const BRAND = {
     headline: 'Did Škoda let you down?',
     subheadline: 'We make it public.',
     body: 'A global, crowdsourced record of Škoda warranty failures, PCP finance disputes, dealer mis-selling, and unresolved service disputes. Every case is searchable and timestamped. Find out how to fight back.',
-    imageUrl: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1400&h=600&fit=crop&crop=center',
-    imageAlt: 'Car on dark road representing consumer dispute',
+    imageUrl: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=1400&h=600&fit=crop&crop=center',
+    imageAlt: 'Consumer frustrated at a car dealership',
     manageLink: 'Already submitted? Manage your case →',
   },
 

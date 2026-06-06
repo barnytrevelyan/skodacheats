@@ -491,6 +491,25 @@ Yours sincerely,
 [YOUR ADDRESS]`,
 
 
+
+  // ── Currencies (Skoda markets only) ───────────────────────────────────────
+  defaultCurrency: 'EUR',
+  currencies: [
+    { code: 'EUR', symbol: '€',   name: 'Euro',              rate: 0.92 },
+    { code: 'GBP', symbol: '£',   name: 'British Pound',     rate: 0.79 },
+    { code: 'CZK', symbol: 'Kč',  name: 'Czech Koruna',      rate: 23.45 },
+    { code: 'PLN', symbol: 'zł',  name: 'Polish Zloty',      rate: 4.02 },
+    { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc',       rate: 0.89 },
+    { code: 'SEK', symbol: 'kr',  name: 'Swedish Krona',     rate: 10.42 },
+    { code: 'NOK', symbol: 'kr',  name: 'Norwegian Krone',   rate: 10.68 },
+    { code: 'DKK', symbol: 'kr',  name: 'Danish Krone',      rate: 6.86 },
+    { code: 'RON', symbol: 'lei', name: 'Romanian Leu',      rate: 4.97 },
+    { code: 'AUD', symbol: 'A$',  name: 'Australian Dollar', rate: 1.53 },
+    { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar',rate: 1.65 },
+    { code: 'INR', symbol: '₹',   name: 'Indian Rupee',      rate: 83.12 },
+    { code: 'ZAR', symbol: 'R',   name: 'South African Rand',rate: 18.65 },
+  ],
+
   // ── Complaint form field labels ────────────────────────────────────────────
   formFields: {
     amountLabel: 'Amount in Dispute',

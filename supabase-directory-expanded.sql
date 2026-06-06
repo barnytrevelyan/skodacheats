@@ -360,7 +360,7 @@ INSERT INTO directory_entries (country_id, section, role_or_type, name, notes, c
    'Uber Eats Belgium primarily uses Bancontact (Belgium''s national debit network) and card payments via Adyen. Dispute via your bank (KBC, BNP Paribas Fortis, Belfius, ING Belgium).',
    NULL, 1),
   ((SELECT id FROM countries WHERE slug='belgium'), 'regulator', 'Consumer Protection',
-   'Direction Générale de l'Inspection Économique / Test-Achats',
+   'Direction Générale de l''Inspection Économique / Test-Achats',
    'File at economie.fgov.be. Test-Achats (consumer organisation) also offers mediation and legal support for app-related billing disputes.',
    'https://www.economie.fgov.be/fr/themes/consommateurs/protection-des-consommateurs/faire-une-plainte', 1),
   ((SELECT id FROM countries WHERE slug='belgium'), 'regulator', 'Ombudsman',

@@ -11,7 +11,7 @@ const FAQ_ITEMS = [
   { q: 'Can I do a chargeback on Uber Eats?', a: 'Yes. Contact your bank or card issuer and dispute the charge. Visa and Mastercard give you 60–120 days from the transaction date. In the UK, Section 75 covers credit card purchases over £100.' },
   { q: 'Has the FTC sued Uber?', a: 'Yes. The FTC and 21 US states sued Uber in April 2025 for deceptive Uber One billing and cancellation practices. An amended complaint was filed in December 2025.' },
   { q: 'Is UberCheats affiliated with Uber?', a: 'No. UberCheats is an independent consumer advocacy platform. It is not affiliated with, authorised, or endorsed by Uber Technologies, Inc.' },
-  { q: 'What is Uber Eats refund policy?', a: 'Uber Eats' stated policy covers refunds for missing items, wrong orders, or undelivered food, but many users report being refused. Under consumer law in most jurisdictions you are entitled to a refund for services not rendered. Under consumer law in most jurisdictions you are legally entitled to a refund for services not rendered.' },
+  { q: 'What is Uber Eats refund policy?', a: 'Uber Eats\' stated policy covers refunds for missing items, wrong orders, or undelivered food, but many users report being refused. Under consumer law in most jurisdictions you are entitled to a refund for services not rendered. Under consumer law in most jurisdictions you are legally entitled to a refund for services not rendered.' },
   { q: 'How do I escalate an Uber complaint?', a: 'Step 1: in-app dispute. Step 2: tweet @UberEats and @Uber_Support publicly with your order number. Step 3: bank chargeback. Step 4: national consumer regulator complaint. Step 5: small claims court.' },
 ]
 
